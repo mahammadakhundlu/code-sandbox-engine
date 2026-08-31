@@ -30,13 +30,16 @@ def compile_code(code: str) -> dict:
 
 def execute_code(work_dir: str, input_data: str) ->dict:
     run_cmd = [
-    "docker","run","--rm","-i",
-    "--network", "none",
-    "--memory=256m",
-    "-v", f"{work_dir}:/app",
-    "-w", "/app",
-    "gcc:latest",
-    "./solution_linux"
+        "docker", "run", "--rm", "-i",
+        "--network", "none",
+        "--memory=256m",
+        "--cap-drop=ALL",
+        "--pids-limit=64",
+        "--read-only",
+        "-v", f"{work_dir}:/app",
+        "-w", "/app",
+        "gcc:latest",
+        "./solution_linux"
     ]
     try:
         run_result = subprocess.run(
